@@ -6,6 +6,7 @@
 const CONFIG = {
   currentLesson: 1,
   cafeMissionUrl: "https://cafe.naver.com/f-e/cafes/29878308/menus/154?viewType=L",
+  zoomUrl: "https://us06web.zoom.us/j/87171569902?pwd=vxtvN98etfs8iz1oveHGQ2oaCkQWOC.1",
   noticeUrl: "#notice",
   resourcesBaseUrl: "#resources",
   lessons: [
@@ -152,7 +153,21 @@ const CONFIG = {
     { name: "다시발견", status: "상세페이지 준비 중", note: "도움이 되는 사람을 떠올리는 중" }
   ],
   guideItems: [
-    { icon: "🎥", title: "줌 들어오는 방법", body: "공지된 줌 링크를 누르고 이름을 닉네임으로 바꿔 입장하세요." },
+    {
+      icon: "📖",
+      title: "전자책 휘리릭 읽고 오기",
+      body: [
+        "한나전에서 만드는 전자책은 AI가 딸깍 만들어주는 전자책과 다릅니다. 내가 직접 겪은 경험, 내가 직접 쓴 문장, 내가 구조화한 내용을 바탕으로 완성해야 독자에게 실제로 도움이 되는 전자책이 됩니다. 그래야 나중에 내용을 보완하고, 업데이트하고, 강의나 코칭으로도 확장할 수 있습니다.",
+        "수업 전에 이메일로 보내드린 전자책을 가볍게 한 번 읽고 와주세요. 완벽하게 분석하지 않아도 괜찮습니다. 전체 흐름과 “전자책은 이렇게 구성되는구나”를 보는 것이 목표입니다."
+      ]
+    },
+    {
+      icon: "🎥",
+      title: "줌 링크 클릭해서 들어오기",
+      body: "수업 시간에는 아래 줌 링크를 눌러 입장하시면 됩니다. 처음이라도 괜찮습니다. 링크 클릭 → 이름 입력 → 입장 순서로 진행하면 됩니다.",
+      buttonText: "줌 링크 열기",
+      buttonUrlKey: "zoomUrl"
+    },
     { icon: "✅", title: "네이버카페 인증 방법", body: "미션 인증 버튼을 누른 뒤 게시판에 캡처나 작성 내용을 올리면 됩니다." },
     { icon: "📄", title: "PDF 저장 방법", body: "문서에서 내보내기 또는 다운로드를 누르고 PDF 형식으로 저장하세요." },
     { icon: "🎨", title: "Canva 사용 안내", body: "템플릿을 고른 뒤 제목과 색상만 바꿔도 충분한 표지 초안이 됩니다." },
@@ -212,12 +227,24 @@ function renderHome() {
 }
 
 function renderGuide() {
-  $("#guideGrid").innerHTML = CONFIG.guideItems.map((item) => `
-    <article class="guide-item">
-      <div class="guide-icon">${item.icon}</div>
-      <h2>${item.title}</h2>
-      <p>${item.body}</p>
-    </article>`).join("");
+  const renderGuideBody = (body) => Array.isArray(body)
+    ? body.map((paragraph) => `<p>${paragraph}</p>`).join("")
+    : `<p>${body}</p>`;
+
+  $("#guideGrid").innerHTML = CONFIG.guideItems.map((item) => {
+    const buttonUrl = item.buttonUrlKey ? CONFIG[item.buttonUrlKey] : item.buttonUrl;
+    const button = item.buttonText && buttonUrl
+      ? `<a class="btn secondary guide-action" href="${buttonUrl}" target="_blank" rel="noopener">${item.buttonText}</a>`
+      : "";
+
+    return `
+      <article class="guide-item">
+        <div class="guide-icon">${item.icon}</div>
+        <h2>${item.title}</h2>
+        ${renderGuideBody(item.body)}
+        ${button}
+      </article>`;
+  }).join("");
 
   const faqs = [
     ["온라인 수업이 처음인데 따라갈 수 있을까요?", "괜찮습니다. 홈에서 오늘 할 일, 강의실에서 영상, 미션 페이지에서 인증 순서만 보면 됩니다."],

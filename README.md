@@ -32,6 +32,7 @@ http://127.0.0.1:4173/index.html
 
 - `currentLesson`: 현재 진행 차시
 - `cafeMissionUrl`: 네이버카페 미션 인증 게시판 링크
+- `zoomUrl`: 시작 안내 페이지의 줌 입장 링크
 - `lessons`: 차시별 제목, 목표, 유튜브 임베드 URL, 미션, 참고자료, FAQ
 - `notices`: 공지사항
 - `students`: 작업 현황판 샘플/운영 데이터
