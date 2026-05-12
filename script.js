@@ -5,7 +5,7 @@
 */
 const CONFIG = {
   currentLesson: 1,
-  cafeMissionUrl: "https://cafe.naver.com/mission-board-sample",
+  cafeMissionUrl: "https://cafe.naver.com/f-e/cafes/29878308/menus/154?viewType=L",
   noticeUrl: "#notice",
   resourcesBaseUrl: "#resources",
   lessons: [
@@ -187,7 +187,7 @@ function renderHome() {
     <p>${lesson.goal}</p>
     <div class="button-row">
       <a class="btn primary" href="#classroom" data-lesson="${lesson.round}">이번 주 영상 보기</a>
-      <a class="btn secondary" href="${CONFIG.cafeMissionUrl}" target="_blank" rel="noopener">미션 인증</a>
+      <a class="btn secondary" href="${CONFIG.cafeMissionUrl}" target="_blank" rel="noopener">미션 인증하러 가기</a>
     </div>`;
 
   $("#currentLessonCard").innerHTML = `
@@ -287,12 +287,14 @@ function renderMissions() {
         <h2>${lesson.mission}</h2>
         <p>${lesson.cheer}</p>
       </div>
-      <a class="btn primary" href="${CONFIG.cafeMissionUrl}" target="_blank" rel="noopener">인증하기</a>
+      <a class="btn primary" href="${CONFIG.cafeMissionUrl}" target="_blank" rel="noopener">미션 인증하러 가기</a>
     </article>`).join("");
 }
 
 function renderSubmit() {
   $("#submitMainButton").href = CONFIG.cafeMissionUrl;
+  const missionNavLink = $("#missionNavLink");
+  if (missionNavLink) missionNavLink.href = CONFIG.cafeMissionUrl;
   $("#submitSteps").innerHTML = [
     { icon: "1", title: "미션 내용 확인", body: "오늘의 미션 또는 차시별 강의실에서 제출할 내용을 확인합니다." },
     { icon: "2", title: "초안 그대로 준비", body: "완벽한 결과물이 아니어도 괜찮습니다. 지금 단계의 작업물을 준비하세요." },
